@@ -6,13 +6,18 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Dapper.Contrib" Version="2.0.78" />
       <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
       <PackageReference Include="Npgsql" Version="6.0.6" />
+      <PackageReference Include="RepoDb.PostgreSql.BulkOperations" Version="0.0.9" />
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Template.Data.Domain\Template.Data.Domain.csproj" />
+      <Reference Include="Microsoft.Extensions.Configuration.Abstractions">
+        <HintPath>..\..\..\..\..\..\usr\local\share\dotnet\shared\Microsoft.AspNetCore.App\6.0.1\Microsoft.Extensions.Configuration.Abstractions.dll</HintPath>
+      </Reference>
+      <Reference Include="Microsoft.Extensions.Options">
+        <HintPath>..\..\..\..\..\..\usr\local\share\dotnet\shared\Microsoft.AspNetCore.App\6.0.1\Microsoft.Extensions.Options.dll</HintPath>
+      </Reference>
     </ItemGroup>
 
 </Project>

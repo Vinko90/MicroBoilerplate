@@ -1,25 +1,73 @@
 import React, { Component } from 'react';
+import './TestMethods';
 
 export class Home extends Component {
   static displayName = Home.name;
-
+  
   render () {
     return (
-      <div>
-        <h1>Hello, world!</h1>
-        <p>Welcome to your new single-page application, built with:</p>
-        <ul>
-          <li><a href='https://get.asp.net/'>ASP.NET Core</a> and <a href='https://msdn.microsoft.com/en-us/library/67ef8sbd.aspx'>C#</a> for cross-platform server-side code</li>
-          <li><a href='https://facebook.github.io/react/'>React</a> for client-side code</li>
-          <li><a href='http://getbootstrap.com/'>Bootstrap</a> for layout and styling</li>
-        </ul>
-        <p>To help you get started, we have also set up:</p>
-        <ul>
-          <li><strong>Client-side navigation</strong>. For example, click <em>Counter</em> then <em>Back</em> to return here.</li>
-          <li><strong>Development server integration</strong>. In development mode, the development server from <code>create-react-app</code> runs in the background automatically, so your client-side resources are dynamically built on demand and the page refreshes when you modify any file.</li>
-          <li><strong>Efficient production builds</strong>. In production mode, development-time features are disabled, and your <code>dotnet publish</code> configuration produces minified, efficiently bundled JavaScript files.</li>
-        </ul>
-        <p>The <code>ClientApp</code> subdirectory is a standard React application based on the <code>create-react-app</code> template. If you open a command prompt in that directory, you can run <code>npm</code> commands such as <code>npm test</code> or <code>npm install</code>.</p>
+      <div className="container">
+        <form>
+            <label>Username:</label>
+            <input type={"text"} placeholder={"Enter Username"} name={"username"} required={true}/>
+            <label>Password:</label>
+            <input type={"password"} placeholder={"Enter Password"} name={"password"} required={true}/>
+            <button type="submit">Login</button>
+        </form>
+        <div>
+            <button type="button" 
+                    className="btn btn-warning"             
+                    onClick="doRefreshToken('/api/account/RefreshToken',{refreshToken: refreshToken})"
+                    id="login">
+                Refresh Token
+            </button>
+            <button
+                type="button"
+                className="btn btn-info"
+                onClick="doCallApi('/api/MyProtectedApi')"
+                id="callApi">
+                Call Protected API ([Authorize])
+            </button>
+            <button
+                type="button"
+                className="btn btn-info"
+                onClick="doCallApi('/api/MyProtectedAdminApi')"
+                id="callAdminApi">
+                Call Protected Admin API [Authorize(Roles = "Admin")]
+            </button>
+        </div>
+          <div>
+              <button
+                  type="button"
+                  className="btn btn-danger"
+                  onClick="doLogout('/api/account/logout?refreshToken=' + refreshToken)"
+                  name="logout">
+                  Logout
+              </button>
+          </div>
+          <div className="alert alert-warning">
+              Obtaining new tokens using the refresh_token should happen only if the
+              id_token has expired. it is a bad practice to call the endpoint to get a
+              new token every time you do an API call.
+          </div>
+          <div id="ajaxResponse">
+              <h2>Response</h2>
+              <div className="highlight">
+                  <pre><code id="ajaxResponseInfo"></code></pre>
+              </div>
+          </div>
+          <div id="decodedToken">
+              <h2>Decoded Access Token</h2>
+              <div className="highlight">
+                  <pre><code id="jwtInfo"></code></pre>
+              </div>
+          </div>
+          <div id="decodedRefreshToken">
+              <h2>Decoded Refresh Token</h2>
+              <div className="highlight">
+                  <pre><code id="jwtRefreshInfo"></code></pre>
+              </div>
+          </div>
       </div>
     );
   }

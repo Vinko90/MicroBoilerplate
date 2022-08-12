@@ -1,7 +1,5 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Template.Data.Domain", "src\Template.Data.Domain\Template.Data.Domain.csproj", "{37CF67FC-D71B-4D28-8C38-4D0D802CFF8C}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Template.Data.Infrastructure", "src\Template.Data.Infrastructure\Template.Data.Infrastructure.csproj", "{3EA4C4E6-5C66-4E40-ACD6-2CE7B82C1D69}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Template.TestWebApp", "src\Template.TestWebApp\Template.TestWebApp.csproj", "{98531267-5A2F-4CB5-B282-D5053A27ED5F}"
@@ -12,10 +10,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{37CF67FC-D71B-4D28-8C38-4D0D802CFF8C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{37CF67FC-D71B-4D28-8C38-4D0D802CFF8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{37CF67FC-D71B-4D28-8C38-4D0D802CFF8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{37CF67FC-D71B-4D28-8C38-4D0D802CFF8C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3EA4C4E6-5C66-4E40-ACD6-2CE7B82C1D69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3EA4C4E6-5C66-4E40-ACD6-2CE7B82C1D69}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3EA4C4E6-5C66-4E40-ACD6-2CE7B82C1D69}.Release|Any CPU.ActiveCfg = Release|Any CPU
