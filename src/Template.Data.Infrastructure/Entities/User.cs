@@ -13,7 +13,7 @@ public class User
 
     public string Password { get; set; }
 
-    public string DisplayName { get; set; }
+    public string? DisplayName { get; set; }
 
     public bool IsActive { get; set; }
 
@@ -24,5 +24,5 @@ public class User
     ///     or an admin changes his Roles or stat/IsActive,
     ///     create a new `SerialNumber` GUID and store it in the DB.
     /// </summary>
-    public string SerialNumber { get; set; }
+    public string? SerialNumber { get; set; }
 }
