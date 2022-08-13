@@ -1,4 +1,4 @@
-namespace Template.Data.Infrastructure.Repositories.Integration;
+namespace Template.Data.Infrastructure.Common;
 
 public class DbSettings
 {

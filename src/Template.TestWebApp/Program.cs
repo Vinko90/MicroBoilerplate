@@ -1,7 +1,7 @@
 using System.Reflection;
+using Template.Data.Infrastructure.Common;
 using Template.Data.Infrastructure.Extensions;
-using Template.Data.Infrastructure.Repositories.Integration;
-using Template.TestWebApp.Manager;
+using Template.Data.Infrastructure.Managers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,7 +16,8 @@ builder.Services.AddControllersWithViews();
 
 // Add services to the container.
 builder.Services.AddDataInfrastructure();
-builder.Services.AddTransient<IDataManager, DataManager>();
+builder.Services.AddTransient<IRolesService, RolesService>();
+
 
 builder.Services.AddSwaggerGen();
 

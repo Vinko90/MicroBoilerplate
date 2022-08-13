@@ -13,9 +13,12 @@ public static class InfrastructureDataExtensions
         RepoDb.PostgreSqlBootstrap.Initialize();
         
         //UoW Transient
-        services.AddTransient<IUnitOfWork<NpgsqlConnection>, DbUnitOfWork>();
+        services.AddTransient<IUnitOfWork<NpgsqlConnection>, UnitOfWork>();
         
         //Repo Singleton
-        services.AddSingleton<IWeatherForecastRepository, WeatherForecastRepository>();
+        services.AddSingleton<IRolesRepository, RolesRepository>();
+        services.AddSingleton<IUserRolesRepository, UserRolesRepository>();
+        services.AddSingleton<IUsersRepository, UsersRepository>();
+        services.AddSingleton<IUserTokensRepository, UserTokensRepository>();
     }
 }

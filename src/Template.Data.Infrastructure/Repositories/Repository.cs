@@ -2,18 +2,18 @@ using Microsoft.Extensions.Options;
 using Npgsql;
 using RepoDb;
 using Template.Data.Infrastructure.Abstractions;
-using Template.Data.Infrastructure.Repositories.Integration;
+using Template.Data.Infrastructure.Common;
 
-namespace Template.Data.Infrastructure;
+namespace Template.Data.Infrastructure.Repositories;
 
-public class CommonRepository<TEntity> : 
+public class Repository<TEntity> : 
     BaseRepository<TEntity, NpgsqlConnection>,
     IRepository<TEntity, NpgsqlConnection>
     where TEntity : class
 {
-    private IUnitOfWork<NpgsqlConnection> _unitOfWork;
+    protected IUnitOfWork<NpgsqlConnection> _unitOfWork;
 
-    public CommonRepository(IOptions<DbSettings> options)
+    public Repository(IOptions<DbSettings> options)
         : base(options.Value.ConnectionString) { }
 
     public void Attach(IUnitOfWork<NpgsqlConnection> unitOfWork) =>

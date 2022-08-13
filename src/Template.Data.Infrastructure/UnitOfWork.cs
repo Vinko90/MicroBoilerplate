@@ -3,17 +3,17 @@ using Microsoft.Extensions.Options;
 using Npgsql;
 using RepoDb;
 using Template.Data.Infrastructure.Abstractions;
-using Template.Data.Infrastructure.Repositories.Integration;
+using Template.Data.Infrastructure.Common;
 
 namespace Template.Data.Infrastructure;
 
-public class DbUnitOfWork : IUnitOfWork<NpgsqlConnection>
+public class UnitOfWork : IUnitOfWork<NpgsqlConnection>
 {
     private DbSettings _dbSettings;
     private NpgsqlConnection _connection;
     private DbTransaction _transaction;
 
-    public DbUnitOfWork(IOptions<DbSettings> options)
+    public UnitOfWork(IOptions<DbSettings> options)
     {
         _dbSettings = options.Value;
     }

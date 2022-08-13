@@ -4,7 +4,7 @@ using Template.Data.Infrastructure.Entities;
 
 namespace Template.Data.Infrastructure.Repositories.Interfaces;
 
-public interface IWeatherForecastRepository : IRepository<WeatherForecastEntity, NpgsqlConnection>
+public interface IRolesRepository : IRepository<Roles, NpgsqlConnection>
 {
-    //custom
+    Roles GetRoleByName(string roleName);
 }

@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Template.TestWebApp.Manager;
+using Template.Data.Infrastructure.Managers;
 
 namespace Template.TestWebApp.Controllers;
 
@@ -8,36 +8,36 @@ namespace Template.TestWebApp.Controllers;
 public class TestController : ControllerBase
 {
     private readonly ILogger<TestController> _logger;
-    private readonly IDataManager _manager;
+    private readonly IRolesService _rolesService;
 
-    public TestController(ILogger<TestController> logger, IDataManager manager)
+    public TestController(ILogger<TestController> logger, IRolesService rolesService)
     {
         _logger = logger;
-        _manager = manager;
+        _rolesService = rolesService;
     }
 
-    [HttpGet("getbyid")]
-    public async Task<IActionResult> GetById(int id, CancellationToken cancellationToken)
+    [HttpGet("getrolesbyuserid")]
+    public Task<IActionResult> GetRolesByUserId(int id)
     {
-        //var weatherForecasts = await _factory.WeatherForecasts.GetByIdAsync(id, cancellationToken);
-        //return Ok(weatherForecasts);
-        var items = _manager.GetById(1);
-        return Ok(items);
+        var items = _rolesService.FindUserRolesAsync(id);
+        return Task.FromResult<IActionResult>(Ok(items));
+    }
+
+    [HttpGet("getrolesbyuserid/{userId:int}")]
+    public Task<IActionResult> IsUserInRole(int userId, string roleName)
+    {
+        return Task.FromResult<IActionResult>(Ok(_rolesService.IsUserInRoleAsync(userId, roleName)));
     }
     
-    [HttpGet("getall")]
-    public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
+    [HttpGet("findallusersinrole")]
+    public Task<IActionResult> FindAllUsersInRole(string roleName)
     {
-        var items = _manager.GetById(1);
-        //var weatherForecasts = await _factory.WeatherForecasts.GetForecastsAsync(cancellationToken);
-        //return Ok(weatherForecasts);
-        return Ok(items);
+        return Task.FromResult<IActionResult>(Ok(_rolesService.FindUsersInRoleAsync(roleName)));
     }
     
-    [HttpPost("add")]
-    public async Task<IActionResult> Add(CancellationToken cancellationToken)
-    {
-        return Ok();
-    }
-    
+    //[HttpGet("finduser")]
+    //public Task<IActionResult> FindUser(string username, string password)
+    //{
+     //   return Task.FromResult<IActionResult>(Ok(_rolesService.FindUser(username, password)));
+   //}
 }
