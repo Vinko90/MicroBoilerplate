@@ -1,8 +1,10 @@
 using System.ComponentModel.DataAnnotations;
+using RepoDb.Attributes;
 
 namespace Template.Data.Infrastructure.Entities;
 
-public class Users
+[Map("Users")]
+public class User
 {
     [Key]
     public int Id { get; set; }

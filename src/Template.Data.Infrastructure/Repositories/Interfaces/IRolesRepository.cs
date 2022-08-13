@@ -4,7 +4,7 @@ using Template.Data.Infrastructure.Entities;
 
 namespace Template.Data.Infrastructure.Repositories.Interfaces;
 
-public interface IRolesRepository : IRepository<Roles, NpgsqlConnection>
+public interface IRolesRepository : IRepository<Role, NpgsqlConnection>
 {
-    Roles GetRoleByName(string roleName);
+    Role GetRoleByName(string roleName);
 }

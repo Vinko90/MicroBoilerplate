@@ -1,9 +1,10 @@
 using Npgsql;
+using Template.AuthenticationAPI.Interfaces;
 using Template.Data.Infrastructure.Abstractions;
 using Template.Data.Infrastructure.Entities;
 using Template.Data.Infrastructure.Repositories.Interfaces;
 
-namespace Template.Data.Infrastructure.Managers;
+namespace Template.AuthenticationAPI.Services;
 
 public class RolesService : IRolesService
 {
@@ -27,9 +28,9 @@ public class RolesService : IRolesService
         _usersRolesRepo.Attach(_unitOfWork);
     }
     
-    public List<Roles> FindUserRolesAsync(int userId)
+    public List<Role> FindUserRolesAsync(int userId)
     {
-        List<Roles> roles = new();
+        List<Role> roles = new();
         try
         {
             _unitOfWork.Begin();
@@ -64,9 +65,9 @@ public class RolesService : IRolesService
         }
     }
 
-    public List<Users> FindUsersInRoleAsync(string roleName)
+    public List<User> FindUsersInRoleAsync(string roleName)
     {
-        List<Users> users = new();
+        List<User> users = new();
         try
         {
             _unitOfWork.Begin();

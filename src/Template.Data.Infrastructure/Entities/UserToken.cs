@@ -1,8 +1,10 @@
 using System.ComponentModel.DataAnnotations;
+using RepoDb.Attributes;
 
 namespace Template.Data.Infrastructure.Entities;
 
-public class UserTokens
+[Map("UserTokens")]
+public class UserToken
 {
     [Key]
     public int Id { get; set; }

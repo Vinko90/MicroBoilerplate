@@ -4,9 +4,9 @@ using Template.Data.Infrastructure.Entities;
 
 namespace Template.Data.Infrastructure.Repositories.Interfaces;
 
-public interface IUserRolesRepository : IRepository<UserRoles, NpgsqlConnection>
+public interface IUserRolesRepository : IRepository<UserRole, NpgsqlConnection>
 {
-    IEnumerable<UserRoles> GetRoleIdsByUserId(object id);
+    IEnumerable<UserRole> GetRoleIdsByUserId(object id);
 
-    IEnumerable<UserRoles> GetAllByRoleId(object id);
+    IEnumerable<UserRole> GetAllByRoleId(object id);
 }

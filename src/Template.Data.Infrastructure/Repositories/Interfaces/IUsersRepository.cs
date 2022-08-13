@@ -4,7 +4,7 @@ using Template.Data.Infrastructure.Entities;
 
 namespace Template.Data.Infrastructure.Repositories.Interfaces;
 
-public interface IUsersRepository : IRepository<Users, NpgsqlConnection>
+public interface IUsersRepository : IRepository<User, NpgsqlConnection>
 {
-    Users FindByUsernameAndPassword(string username, string password);
+    User FindByUsernameAndPassword(string username, string password);
 }

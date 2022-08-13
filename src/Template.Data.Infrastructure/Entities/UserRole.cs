@@ -1,6 +1,9 @@
+using RepoDb.Attributes;
+
 namespace Template.Data.Infrastructure.Entities;
 
-public class UserRoles
+[Map("UserRoles")]
+public class UserRole
 {
     public int UserId { get; set; }
     

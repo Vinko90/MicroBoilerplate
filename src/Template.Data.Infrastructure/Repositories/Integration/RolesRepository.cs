@@ -6,14 +6,14 @@ using Template.Data.Infrastructure.Repositories.Interfaces;
 namespace Template.Data.Infrastructure.Repositories.Integration;
 
 public class RolesRepository : 
-    Repository<Roles>, IRolesRepository
+    Repository<Role>, IRolesRepository
 {
     public RolesRepository(IOptions<DbSettings> options)
         : base(options)
     {
     }
 
-    public Roles GetRoleByName(string roleName) => 
+    public Role GetRoleByName(string roleName) => 
         Query(x => x.RoleName == roleName,
             transaction: _unitOfWork?.Transaction)?.FirstOrDefault();
 }

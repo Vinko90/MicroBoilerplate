@@ -6,18 +6,18 @@ using Template.Data.Infrastructure.Repositories.Interfaces;
 namespace Template.Data.Infrastructure.Repositories.Integration;
 
 public class UserRolesRepository : 
-    Repository<UserRoles>, IUserRolesRepository
+    Repository<UserRole>, IUserRolesRepository
 {
     public UserRolesRepository(IOptions<DbSettings> options)
         : base(options)
     {
     }
 
-    public IEnumerable<UserRoles> GetRoleIdsByUserId(object id) => 
+    public IEnumerable<UserRole> GetRoleIdsByUserId(object id) => 
         Query(x => x.UserId == (int) id,
             transaction: _unitOfWork?.Transaction)?.ToList();
     
-    public IEnumerable<UserRoles> GetAllByRoleId(object id) => 
+    public IEnumerable<UserRole> GetAllByRoleId(object id) => 
         Query(x => x.RoleId == (int) id,
             transaction: _unitOfWork?.Transaction)?.ToList();
 }

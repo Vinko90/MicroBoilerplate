@@ -1,7 +1,5 @@
 using System.Reflection;
 using Template.Data.Infrastructure.Common;
-using Template.Data.Infrastructure.Extensions;
-using Template.Data.Infrastructure.Managers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,12 +11,6 @@ builder.Services.Configure<DbSettings>
     (builder.Configuration.GetSection("DbSettings"));
 
 builder.Services.AddControllersWithViews();
-
-// Add services to the container.
-builder.Services.AddDataInfrastructure();
-builder.Services.AddTransient<IRolesService, RolesService>();
-
-
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
