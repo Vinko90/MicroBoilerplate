@@ -115,7 +115,8 @@ public class AccountController : Controller
         return Json(new { Username = claimsIdentity?.Name });
     }
     
-    [ValidateAntiForgeryToken]
+    //[ValidateAntiForgeryToken] <---- Enable this for validating AntiForgery cookie!
+    [IgnoreAntiforgeryToken]
     [HttpPost("[action]")]
     public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordDTO model)
     {
