@@ -79,14 +79,14 @@ public class UsersService : IUsersService
             if (user.LastLoggedIn != null)
             {
                 var updateLastActivityDate = TimeSpan.FromMinutes(2);
-                var currentUtc = DateTimeOffset.UtcNow;
+                var currentUtc = DateTime.UtcNow;
                 var timeElapsed = currentUtc.Subtract(user.LastLoggedIn.Value);
                 if (timeElapsed < updateLastActivityDate)
                 {
                     return Task.CompletedTask;
                 }
             }
-            user.LastLoggedIn = DateTimeOffset.UtcNow;
+            user.LastLoggedIn = DateTime.UtcNow;
             _usersRepo.Update(user);
             _unitOfWork.Commit();
         }

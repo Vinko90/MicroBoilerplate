@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using Template.AuthenticationAPI.Common;
 using Template.AuthenticationAPI.Interfaces;
+using Template.Data.Infrastructure.DTO;
 using Template.Data.Infrastructure.Entities;
 
 namespace Template.AuthenticationAPI.Services;

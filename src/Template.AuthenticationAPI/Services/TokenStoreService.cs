@@ -65,7 +65,7 @@ public class TokenStoreService : ITokenStoreService
             throw new ArgumentNullException(nameof(user));
         }
 
-        var now = DateTimeOffset.UtcNow;
+        var now = DateTime.UtcNow;
         var token = new UserToken
         {
             UserId = user.Id,
@@ -224,7 +224,7 @@ public class TokenStoreService : ITokenStoreService
             _unitOfWork.Begin();
             var token = _tokenRepo.GetTokenByHashAndUserId(accessTokenHash, userId);
             _unitOfWork.Commit();
-            return Task.FromResult(token?.AccessTokenExpiresDateTime >= DateTimeOffset.UtcNow);
+            return Task.FromResult(token?.AccessTokenExpiresDateTime >= DateTime.UtcNow);
         }
         catch (Exception e)
         {

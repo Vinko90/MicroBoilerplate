@@ -1,0 +1,237 @@
+﻿@page "/"
+@using Template.Data.Infrastructure.DTO
+@using System.Text
+@using System.Text.Json
+@using System.Net
+@using System.Text.Json.Nodes
+@using System.IdentityModel.Tokens.Jwt
+@using System.Net.Http.Headers
+@inject HttpClient Http
+
+<MudGrid>
+    <MudItem xs="12" sm="4">
+        <MudPaper Class="pa-4">
+            <MudForm>
+                <MudTextField T="string" @bind-Value="Username" Label="Username" Required="true" RequiredError="User name is required!"/>
+                <MudTextField T="string" @bind-Value="Password" Label="Password" Required="true" RequiredError="Password is required!" InputType="InputType.Password"/>
+            </MudForm>   
+            <div class="d-flex pt-4">
+                 <MudButton Variant="Variant.Filled"
+                           Color="Color.Primary"
+                           DisableElevation="true"
+                           OnClick="@(Login)">
+                    Login
+                </MudButton>
+                <MudButton Variant="Variant.Filled"
+                           Color="Color.Secondary"
+                           DisableElevation="true"
+                           OnClick="@(Logout)"
+                           Class="mx-1">
+                    Logout
+                </MudButton>
+            </div>
+        </MudPaper>
+        <MudPaper Class="pa-4 mt-4">
+            <MudButton Variant="Variant.Filled"
+                       Color="Color.Warning"
+                       DisableElevation="true"
+                       OnClick="@(RefreshToken)"
+                       Class="mx-1">
+                Refresh Token
+            </MudButton>
+            <MudButton Variant="Variant.Filled"
+                       Color="Color.Info"
+                       DisableElevation="true"
+                       OnClick="@(() => CallProtectedEndpoint("/api/TestAuthorize"))"
+                       Class="mx-1">
+                Call - User
+            </MudButton>
+            <MudButton Variant="Variant.Filled"
+                       Color="Color.Info"
+                       DisableElevation="true"
+                       OnClick="@(() => CallProtectedEndpoint("/api/TestAdmin"))"
+                       Class="mx-1">
+                Call - Admin
+            </MudButton>
+            <MudAlert Class="mt-4" Severity="Severity.Warning">
+                Obtaining new tokens using the refresh_token should happen only if the
+                id_token has expired. It is bad practice to call the endpoint to get a
+                new token every time you do an API call.
+            </MudAlert>
+        </MudPaper>
+    </MudItem>
+    <MudItem xs="12" sm="8">
+        <MudPaper Class="pa-4 mud-height-full">
+            <MudText Typo="Typo.subtitle2">Output</MudText>
+            <MudTextField T="string" 
+                          Label="Response" 
+                          Variant="Variant.Outlined" 
+                          Lines="6"
+                          Text="@ResponseMsg" />
+            <MudTextField T="string" 
+                          Label="Decoded Access Token" 
+                          Variant="Variant.Outlined"
+                          Lines="6"
+                          Text="@DecodedToken" />
+            <MudTextField T="string" 
+                          Label="Decoded Refresh Token" 
+                          Variant="Variant.Outlined"
+                          Lines="6"
+                          Text="@DecodedRefreshToken" />
+        </MudPaper>
+    </MudItem>
+</MudGrid>
+
+@code {
+    private string Username { get; set; } = "vincenzo";
+    private string Password { get; set; } = "1234";
+    private string DecodedToken { get; set; } = "";
+    private string DecodedRefreshToken { get; set; } = "";
+    private string ResponseMsg { get; set; } = "";
+
+    private string _jwtToken = "";
+    private string _jwtRefreshToken = "";
+
+    private async void Login()
+    {
+        EraseFields();
+        
+        try
+        {
+            var loginDto = new LoginUserDTO
+            {
+                UserName = Username,
+                Password = Password
+            };
+
+            var requestContent = new StringContent(JsonSerializer.Serialize(loginDto),
+                Encoding.UTF8, "application/json");
+            
+            var response = await Http.PostAsync("/api/Account/login", requestContent);
+            var jsonString = await response.Content.ReadAsStringAsync();
+            
+            ResponseMsg = $"Status: {response.StatusCode} Body: {jsonString}";
+
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                dynamic? obj = JsonNode.Parse(jsonString);
+                if (obj == null) return;
+                _jwtToken = (string) obj["access_token"];
+                _jwtRefreshToken = (string) obj["refresh_token"];
+                DecodedToken = DecodeToken(_jwtToken);
+                DecodedRefreshToken = DecodeToken(_jwtRefreshToken);
+            }
+        }
+        catch (Exception e)
+        {
+            ResponseMsg = e.Message;
+        }
+        StateHasChanged();
+    }
+
+    private async void Logout()
+    {
+        EraseFields();
+        
+        if (string.IsNullOrEmpty(_jwtToken) || string.IsNullOrEmpty(_jwtRefreshToken))
+        {
+            ResponseMsg = "Please login first!";
+        }
+        else
+        {
+            try
+            {
+                var requestMessage = new HttpRequestMessage(HttpMethod.Get, $"/api/Account/logout?refreshToken={_jwtRefreshToken}");
+                requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _jwtToken);
+
+                var response = await Http.SendAsync(requestMessage);
+                var jsonString = await response.Content.ReadAsStringAsync();
+                ResponseMsg = $"Status: {response.StatusCode} Body: {jsonString}";
+                _jwtToken = "";
+                _jwtRefreshToken = "";
+            }
+            catch (Exception e)
+            {
+                ResponseMsg = e.Message;
+            }
+        }
+        StateHasChanged();
+    }
+
+    private async void RefreshToken()
+    {
+        EraseFields();
+        
+        if (string.IsNullOrEmpty(_jwtToken) || string.IsNullOrEmpty(_jwtRefreshToken))
+        {
+            ResponseMsg = "Please login first!";
+        }
+        else
+        {
+            try
+            {
+                var dto = new TokenDTO()
+                {
+                    RefreshToken = _jwtRefreshToken
+                };
+                
+                var requestMessage = new HttpRequestMessage(HttpMethod.Post, $"/api/Account/RefreshToken");
+                requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _jwtToken);
+                
+                requestMessage.Content = new StringContent(JsonSerializer.Serialize(dto),
+                    Encoding.UTF8, "application/json");
+                
+                var response = await Http.SendAsync(requestMessage);
+                var jsonString = await response.Content.ReadAsStringAsync();
+                ResponseMsg = $"Status: {response.StatusCode} Body: {jsonString}";
+
+                if (response.StatusCode == HttpStatusCode.OK)
+                {
+                    dynamic? obj = JsonNode.Parse(jsonString);
+                    if (obj == null) return;
+                    _jwtToken = (string) obj["access_token"];
+                    _jwtRefreshToken = (string) obj["refresh_token"];
+                    DecodedToken = DecodeToken(_jwtToken);
+                    DecodedRefreshToken = DecodeToken(_jwtRefreshToken);
+                }
+            }
+            catch (Exception e)
+            {
+                ResponseMsg = e.Message;
+            }
+        }
+        StateHasChanged();
+    }
+
+    private async void CallProtectedEndpoint(string endpoint)
+    {
+        EraseFields();
+
+        try
+        {
+            var requestMessage = new HttpRequestMessage(HttpMethod.Get, endpoint);
+            requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _jwtToken);
+            var response = await Http.SendAsync(requestMessage);
+            var jsonString = await response.Content.ReadAsStringAsync();
+            ResponseMsg = $"Status: {response.StatusCode} Body: {jsonString}";
+        }
+        catch (Exception e)
+        {
+            ResponseMsg = e.Message;
+        }
+        StateHasChanged();
+    }
+
+    private static string DecodeToken(string token)
+    {
+        var handler = new JwtSecurityTokenHandler();
+        return handler.ReadJwtToken(token).ToString();
+    }
+
+    private void EraseFields()
+    {
+        ResponseMsg = "";
+        DecodedToken = "";
+        DecodedRefreshToken = "";
+    }
+}

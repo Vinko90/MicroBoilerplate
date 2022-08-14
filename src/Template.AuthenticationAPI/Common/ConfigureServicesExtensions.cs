@@ -96,13 +96,15 @@ public static class ConfigureServicesExtensions
     public static void AddCustomServices(this IServiceCollection services)
     {
         services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-        services.AddScoped<IAntiForgeryCookieService, AntiForgeryCookieService>();
-        services.AddScoped<IUsersService, UsersService>();
-        services.AddScoped<IRolesService, RolesService>();
         services.AddSingleton<ISecurityService, SecurityService>();
-        services.AddScoped<ITokenStoreService, TokenStoreService>();
+
+        services.AddScoped<IAntiForgeryCookieService, AntiForgeryCookieService>();
         services.AddScoped<ITokenValidatorService, TokenValidatorService>();
         services.AddScoped<ITokenFactoryService, TokenFactoryService>();
+        
+        services.AddTransient<IUsersService, UsersService>();
+        services.AddTransient<IRolesService, RolesService>();
+        services.AddTransient<ITokenStoreService, TokenStoreService>();
     }
     
     public static void UseCustomSwagger(this IApplicationBuilder app)

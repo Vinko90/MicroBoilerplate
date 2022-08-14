@@ -1,4 +1,4 @@
-using Template.AuthenticationAPI.Common;
+using Template.Data.Infrastructure.DTO;
 using Template.Data.Infrastructure.Entities;
 
 namespace Template.AuthenticationAPI.Interfaces;

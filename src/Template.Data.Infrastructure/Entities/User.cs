@@ -17,7 +17,7 @@ public class User
 
     public bool IsActive { get; set; }
 
-    public DateTimeOffset? LastLoggedIn { get; set; }
+    public DateTime? LastLoggedIn { get; set; }
 
     /// <summary>
     ///     every time the user changes his Password,

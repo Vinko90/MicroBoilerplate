@@ -1,6 +1,6 @@
 using System.Security.Claims;
 
-namespace Template.AuthenticationAPI.Common;
+namespace Template.Data.Infrastructure.DTO;
 
 public class JwtTokensData
 {

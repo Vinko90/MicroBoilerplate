@@ -14,7 +14,7 @@ public class UserTokensRepository :
     }
 
     public int DeleteExpiredRefreshTokens() =>
-        Delete(x => x.RefreshTokenExpiresDateTime < DateTimeOffset.Now,
+        Delete(x => x.RefreshTokenExpiresDateTime < DateTime.Now.ToUniversalTime(),
             transaction: _unitOfWork.Transaction);
 
     public int DeleteTokensWithSameRefreshTokenSource(string source) =>
