@@ -9,16 +9,8 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 
 builder.Services.AddScoped(sp => new HttpClient
 {
-    BaseAddress = new Uri("http://localhost:4000/")
+    BaseAddress = new Uri("http://localhost:5000/")
 }); 
-
-//builder.Services
-  //  .AddTransient<CookieHandler>()
-   // .AddScoped(sp => sp
-    //    .GetRequiredService<IHttpClientFactory>()
-     //   .CreateClient("API"))
-   // .AddHttpClient("API", client => client.BaseAddress = new Uri("http://localhost:4000/"))
-   // .AddHttpMessageHandler<CookieHandler>();
 
 builder.Services.AddMudServices();
 

@@ -38,6 +38,7 @@ public class Repository<TEntity> :
     public TEntity Query(object id) =>
         Query(id,
             transaction: _unitOfWork?.Transaction)?.FirstOrDefault();
+    
 
     public int Update(TEntity entity) =>
         Update(entity,

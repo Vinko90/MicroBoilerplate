@@ -1,6 +1,18 @@
 {
   "Routes": [
     {
+      "DownstreamPathTemplate": "/api/account/{catchAll}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 4000
+        }
+      ],
+      "UpstreamPathTemplate": "/auth/{catchAll}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ]
+    },
+    {
       "DownstreamPathTemplate": "/service-one/one",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -10,7 +22,11 @@
         }
       ],
       "UpstreamPathTemplate": "/one",
-      "UpstreamHttpMethod": [ "GET" ]
+      "UpstreamHttpMethod": [ "GET" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
     },
     {
       "DownstreamPathTemplate": "/service-two/two",
@@ -22,12 +38,15 @@
         }
       ],
       "UpstreamPathTemplate": "/two",
-      "UpstreamHttpMethod": [ "GET" ]
+      "UpstreamHttpMethod": [ "GET" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
     }
   ],
   "GlobalConfiguration": {
     "RequestIdKey": "OcRequestId",
-    "AdministrationPath": "/administration",
     "BaseUrl":  "http://localhost:5000"
   }
 }

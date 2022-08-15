@@ -50,16 +50,16 @@
             <MudButton Variant="Variant.Filled"
                        Color="Color.Info"
                        DisableElevation="true"
-                       OnClick="@(() => CallProtectedEndpoint("/api/TestAuthorize"))"
+                       OnClick="@(() => CallProtectedEndpoint("/one"))"
                        Class="mx-1">
-                Call - User
+                Call - S1
             </MudButton>
             <MudButton Variant="Variant.Filled"
                        Color="Color.Info"
                        DisableElevation="true"
-                       OnClick="@(() => CallProtectedEndpoint("/api/TestAdmin"))"
+                       OnClick="@(() => CallProtectedEndpoint("/two"))"
                        Class="mx-1">
-                Call - Admin
+                Call - S2
             </MudButton>
             <MudAlert Class="mt-4" Severity="Severity.Warning">
                 Obtaining new tokens using the refresh_token should happen only if the
@@ -116,7 +116,7 @@
             var requestContent = new StringContent(JsonSerializer.Serialize(loginDto),
                 Encoding.UTF8, "application/json");
             
-            var response = await Http.PostAsync("/api/Account/login", requestContent);
+            var response = await Http.PostAsync("/auth/login", requestContent);
             var jsonString = await response.Content.ReadAsStringAsync();
             
             ResponseMsg = $"Status: {response.StatusCode} Body: {jsonString}";
@@ -150,7 +150,7 @@
         {
             try
             {
-                var requestMessage = new HttpRequestMessage(HttpMethod.Get, $"/api/Account/logout?refreshToken={_jwtRefreshToken}");
+                var requestMessage = new HttpRequestMessage(HttpMethod.Get, $"/auth/logout?refreshToken={_jwtRefreshToken}");
                 requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _jwtToken);
 
                 var response = await Http.SendAsync(requestMessage);
@@ -186,7 +186,7 @@
                     RefreshToken = _jwtRefreshToken
                 };
                 
-                var requestMessage = new HttpRequestMessage(HttpMethod.Post, $"/api/Account/RefreshToken");
+                var requestMessage = new HttpRequestMessage(HttpMethod.Post, $"/auth/RefreshToken");
                 requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _jwtToken);
                 //requestMessage.Headers.Add("X-XSRF-TOKEN", token);
 
@@ -249,7 +249,7 @@
                     ConfirmPassword = NewPassword
                 };
                 
-                var requestMessage = new HttpRequestMessage(HttpMethod.Post, $"/api/Account/ChangePassword");
+                var requestMessage = new HttpRequestMessage(HttpMethod.Post, $"/auth/ChangePassword");
                 requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _jwtToken);
                 
                 requestMessage.Content = new StringContent(JsonSerializer.Serialize(dto),

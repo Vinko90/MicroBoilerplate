@@ -7,7 +7,7 @@ namespace Template.ServiceOneAPI.Controllers;
 public class OneController : ControllerBase
 {
     private static readonly string[] OneList = {
-        "red", "blue", "yellow"
+        "Blue", "Yellow", "Red"
     };
     
     //GET service-one/

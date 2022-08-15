@@ -12,7 +12,6 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-app.UseAuthorization();
 app.UseRouting();
 app.MapControllers();
 app.UseSwagger();
