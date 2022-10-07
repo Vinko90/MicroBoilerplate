@@ -30,38 +30,15 @@ public class UsersService : IUsersService
     }
 
     public ValueTask<User> FindUserAsync(int userId)
-    {
-        try
-        {
-            _unitOfWork.Begin();
-            var user = _usersRepo.Query(userId);
-            _unitOfWork.Commit();
-            return new ValueTask<User>(user);
-        }
-        catch (Exception e)
-        {
-            _unitOfWork.Rollback();
-            Console.WriteLine(e);
-            throw;
-        }
+    { 
+        return new ValueTask<User>(_usersRepo.Query(userId));
     }
 
     public Task<User> FindUserAsync(string username, string password)
     {
-        try
-        {
-            var passwordHash = _securityService.GetSha256Hash(password);
-            _unitOfWork.Begin();
-            var user = _usersRepo.FindByUsernameAndPassword(username, passwordHash);
-            _unitOfWork.Commit();
-            return Task.FromResult(user);
-        }
-        catch (Exception e)
-        {
-            _unitOfWork.Rollback();
-            Console.WriteLine(e);
-            throw;
-        }
+        var passwordHash = _securityService.GetSha256Hash(password);
+        var user = _usersRepo.FindByUsernameAndPassword(username, passwordHash);
+        return Task.FromResult(user);
     }
 
     public async Task<string> GetSerialNumberAsync(int userId)

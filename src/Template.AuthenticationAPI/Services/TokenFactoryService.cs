@@ -3,10 +3,10 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
-using Template.AuthenticationAPI.Common;
 using Template.AuthenticationAPI.Interfaces;
 using Template.Data.Infrastructure.DTO;
 using Template.Data.Infrastructure.Entities;
+using Template.Shared.Models;
 
 namespace Template.AuthenticationAPI.Services;
 
@@ -54,22 +54,10 @@ public class TokenFactoryService : ITokenFactoryService
         ClaimsPrincipal decodedRefreshTokenPrincipal = null;
         try
         {
-            decodedRefreshTokenPrincipal = new JwtSecurityTokenHandler().ValidateToken(
-                refreshTokenValue,
-                new TokenValidationParameters
-                {
-                    ValidIssuer = BearerTokensOptions.Issuer, // site that makes the token
-                    ValidAudience = BearerTokensOptions.Audience, // site that consumes the token
-                    RequireExpirationTime = true,
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(BearerTokensOptions.Key)),
-                    ValidateIssuerSigningKey = true, // verify signature to avoid tampering
-                    ValidateLifetime = true, // validate the expiration
-                    ClockSkew = TimeSpan.Zero // tolerance for the expiration date
-                },
-                out _
-            );
+            decodedRefreshTokenPrincipal = new JwtSecurityTokenHandler()
+                .ValidateToken(refreshTokenValue, 
+                    BearerTokensOptions.CompanyValidationParameters,
+                out _);
         }
         catch (Exception ex)
         {

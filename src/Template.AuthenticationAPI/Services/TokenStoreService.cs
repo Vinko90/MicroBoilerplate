@@ -1,10 +1,10 @@
 using System.Globalization;
 using Npgsql;
-using Template.AuthenticationAPI.Common;
 using Template.AuthenticationAPI.Interfaces;
 using Template.Data.Infrastructure.Abstractions;
 using Template.Data.Infrastructure.Entities;
 using Template.Data.Infrastructure.Repositories.Interfaces;
+using Template.Shared.Models;
 
 namespace Template.AuthenticationAPI.Services;
 
@@ -180,20 +180,8 @@ public class TokenStoreService : ITokenStoreService
         }
 
         var refreshTokenIdHash = _securityService.GetSha256Hash(refreshTokenSerial);
-
-        try
-        {
-            _unitOfWork.Begin();
-            var token = _tokenRepo.GetTokenByRefreshTokenIdHash(refreshTokenIdHash);
-            _unitOfWork.Commit();
-            return Task.FromResult(token);
-        }
-        catch (Exception e)
-        {
-            _unitOfWork.Rollback();
-            Console.WriteLine(e);
-            throw;
-        }
+        var token = _tokenRepo.GetTokenByRefreshTokenIdHash(refreshTokenIdHash);
+        return Task.FromResult(token);
     }
 
     public Task InvalidateUserTokensAsync(int userId)
@@ -218,19 +206,7 @@ public class TokenStoreService : ITokenStoreService
     public Task<bool> IsValidTokenAsync(string accessToken, int userId)
     {
         var accessTokenHash = _securityService.GetSha256Hash(accessToken);
-
-        try
-        {
-            _unitOfWork.Begin();
-            var token = _tokenRepo.GetTokenByHashAndUserId(accessTokenHash, userId);
-            _unitOfWork.Commit();
-            return Task.FromResult(token?.AccessTokenExpiresDateTime >= DateTime.UtcNow);
-        }
-        catch (Exception e)
-        {
-            _unitOfWork.Rollback();
-            Console.WriteLine(e);
-            throw;
-        }
+        var token = _tokenRepo.GetTokenByHashAndUserId(accessTokenHash, userId);
+        return Task.FromResult(token?.AccessTokenExpiresDateTime >= DateTime.UtcNow);
     }
 }

@@ -1,6 +1,5 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Template.AuthenticationAPI.Interfaces;
 using Template.Data.Infrastructure.DTO;
@@ -9,7 +8,6 @@ namespace Template.AuthenticationAPI.Controllers;
 
 [Authorize]
 [Route("api/[controller]")]
-[EnableCors("CorsPolicy")]
 public class AccountController : Controller
 {
     private readonly IAntiForgeryCookieService _antiforgery;

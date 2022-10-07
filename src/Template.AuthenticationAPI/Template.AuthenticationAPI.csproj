@@ -4,7 +4,7 @@
         <TargetFramework>net6.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
-        <UserSecretsId>d9cc45bd-838a-417a-a0ae-de10efa3634c</UserSecretsId>
+        <UserSecretsId>160e44f0-e56e-4ff7-8c76-781b17425929</UserSecretsId>
     </PropertyGroup>
 
     <ItemGroup>
@@ -14,6 +14,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Template.Data.Infrastructure\Template.Data.Infrastructure.csproj" />
+      <ProjectReference Include="..\Template.Shared\Template.Shared.csproj" />
     </ItemGroup>
 
 </Project>
